@@ -1,0 +1,109 @@
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: "react-web-app"
+  labels:
+    app: "react-web-app"
+spec: {}
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: "react-web-app"
+  labels:
+    app: "react-web-app"
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "react-web-app:latest"
+  postCommit: {}
+  resources: {}
+  source:
+    git:
+      uri: "https://github.com/ocp-rhdh-poc/react-web-app"
+      ref: "main"
+    type: Git
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: nodejs:16-ubi8
+  triggers:
+    - github:
+        secret: "mylife"
+      type: GitHub
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: "react-web-app"
+  labels:
+    app: "react-web-app"
+spec:
+  template:
+    spec:
+      containers:
+        - image: "react-web-app:latest"
+          name: "react-web-app"
+          securityContext:
+            privileged: false
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              memory: 512Mi
+    metadata:
+      labels:
+        app: "react-web-app"
+  replicas: 1
+  selector:
+    app: "react-web-app"
+  triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - "react-web-app"
+        from:
+          kind: ImageStreamTag
+          name: "react-web-app:latest"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: react-web-app
+  name: react-web-app
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 3000
+  selector:
+    app: react-web-app
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: react-web-app
+  name: react-web-app
+spec:
+  port:
+    targetPort: 3000
+  to:
+    kind: Service
+    name: react-web-app
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
