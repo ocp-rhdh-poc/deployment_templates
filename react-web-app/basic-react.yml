@@ -2,17 +2,17 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: "{{ values.name }}"
+  name: "${{ values.name }}"
   labels:
-    app: "{{ values.name }}"
+    app: "${{ values.name }}"
 spec: {}
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: {{ values.name }}
+  name: { { values.name } }
   labels:
-    app: "{{ values.name }}"
+    app: "${{ values.name }}"
 spec:
   output:
     to:
