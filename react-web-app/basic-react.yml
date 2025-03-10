@@ -41,7 +41,7 @@ spec:
       type: ImageChange
 ---
 apiVersion: apps.openshift.io/v1
-kind: Deployment
+kind: DeploymentConfig
 metadata:
   name: "${{ values.name }}"
   labels:
