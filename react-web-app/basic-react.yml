@@ -34,7 +34,7 @@ spec:
         name: nodejs:16-ubi8
   triggers:
     - github:
-        secret: "{{ github_secret }}"
+        secret: "bWVobWVobWVo"
       type: GitHub
     - type: ConfigChange
     - imageChange: {}
