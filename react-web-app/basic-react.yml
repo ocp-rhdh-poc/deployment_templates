@@ -45,7 +45,7 @@ kind: Deployment
 metadata:
   annotations:
     image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"${{ values.name }}:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${{ values.name }}\")].image"}]'
-    argocd.argoproj.io/compare-options: IgnoreExtraneous
+    # argocd.argoproj.io/compare-options: IgnoreExtraneous
   creationTimestamp: null
   labels:
     app: "${{ values.name }}"
