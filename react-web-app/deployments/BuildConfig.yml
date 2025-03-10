@@ -1,0 +1,32 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: "${{ values.name }}"
+  labels:
+    app: "${{ values.name }}"
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "${{ values.name }}:latest"
+  postCommit: {}
+  resources: {}
+  source:
+    git:
+      uri: "${{ values.source_repository }}"
+      ref: "master"
+    type: Git
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        namespace: openshift
+        name: nodejs:16-ubi8
+  triggers:
+    - github:
+        secret: "bWVobWVobWVo"
+      type: GitHub
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
