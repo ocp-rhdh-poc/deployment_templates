@@ -41,7 +41,7 @@ spec:
       type: ImageChange
 ---
 apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+kind: Deployment
 metadata:
   name: "${{ values.name }}"
   labels:
@@ -50,10 +50,13 @@ spec:
   template:
     spec:
       containers:
-        - image: "${{ values.name }}:latest"
+        - image: "${{ values.name }}"
+          imagePullPolicy: Always
           name: "${{ values.name }}"
           securityContext:
             privileged: false
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
           ports:
             - containerPort: 3000
               name: http
@@ -67,16 +70,6 @@ spec:
   replicas: 1
   selector:
     app: "${{ values.name }}"
-  triggers:
-    - type: ConfigChange
-    - type: ImageChange
-      imageChangeParams:
-        automatic: true
-        containerNames:
-          - "${{ values.name }}"
-        from:
-          kind: ImageStreamTag
-          name: "${{ values.name }}:latest"
 ---
 apiVersion: v1
 kind: Service
