@@ -2,27 +2,27 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: "{{ name }}"
+  name: "{{ values.name }}"
   labels:
-    app: "{{ name }}"
+    app: "{{ values.name }}"
 spec: {}
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: "{{ name }}"
+  name: "{{ values.name }}"
   labels:
-    app: "{{ name }}"
+    app: "{{ values.name }}"
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: "{{ name }}:latest"
+      name: "{{ values.name }}:latest"
   postCommit: {}
   resources: {}
   source:
     git:
-      uri: "{{ source_repository }}"
+      uri: "{{ values.source_repository }}"
       ref: "main"
     type: Git
   strategy:
@@ -43,15 +43,15 @@ spec:
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: "{{ name }}"
+  name: "{{ values.name }}"
   labels:
-    app: "{{ name }}"
+    app: "{{ values.name }}"
 spec:
   template:
     spec:
       containers:
-        - image: "{{ name }}:latest"
-          name: "{{ name }}"
+        - image: "{{ values.name }}:latest"
+          name: "{{ values.name }}"
           securityContext:
             privileged: false
           ports:
@@ -60,50 +60,50 @@ spec:
               protocol: TCP
           resources:
             limits:
-              memory: "{{ memorylimit }}"
+              memory: "{{ values.memorylimit }}"
     metadata:
       labels:
-        app: "{{ name }}"
+        app: "{{ values.name }}"
   replicas: 1
   selector:
-    app: "{{ name }}"
+    app: "{{ values.name }}"
   triggers:
     - type: ConfigChange
     - type: ImageChange
       imageChangeParams:
         automatic: true
         containerNames:
-          - "{{ name }}"
+          - "{{ values.name }}"
         from:
           kind: ImageStreamTag
-          name: "{{ name }}:latest"
+          name: "{{ values.name }}:latest"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: "{{ name }}"
-  name: "{{ name }}"
+    app: "{{ values.name }}"
+  name: "{{ values.name }}"
 spec:
   ports:
     - name: http
       port: 8080
       targetPort: 3000
   selector:
-    app: "{{ name }}"
+    app: "{{ values.name }}"
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   labels:
-    app: "{{ name }}"
-  name: "{{ name }}"
+    app: "{{ values.name }}"
+  name: "{{ values.name }}"
 spec:
   port:
     targetPort: 3000
   to:
     kind: Service
-    name: "{{ name }}"
+    name: "{{ values.name }}"
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
