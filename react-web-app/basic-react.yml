@@ -2,27 +2,27 @@
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: "react-web-app"
+  name: "{{ name }}"
   labels:
-    app: "react-web-app"
+    app: "{{ name }}"
 spec: {}
 ---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: "react-web-app"
+  name: "{{ name }}"
   labels:
-    app: "react-web-app"
+    app: "{{ name }}"
 spec:
   output:
     to:
       kind: ImageStreamTag
-      name: "react-web-app:latest"
+      name: "{{ name }}:latest"
   postCommit: {}
   resources: {}
   source:
     git:
-      uri: "https://github.com/ocp-rhdh-poc/react-web-app"
+      uri: "{{ source_repository }}"
       ref: "main"
     type: Git
   strategy:
@@ -34,7 +34,7 @@ spec:
         name: nodejs:16-ubi8
   triggers:
     - github:
-        secret: "mylife"
+        secret: "{{ github_secret }}"
       type: GitHub
     - type: ConfigChange
     - imageChange: {}
@@ -43,15 +43,15 @@ spec:
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: "react-web-app"
+  name: "{{ name }}"
   labels:
-    app: "react-web-app"
+    app: "{{ name }}"
 spec:
   template:
     spec:
       containers:
-        - image: "react-web-app:latest"
-          name: "react-web-app"
+        - image: "{{ name }}:latest"
+          name: "{{ name }}"
           securityContext:
             privileged: false
           ports:
@@ -60,50 +60,50 @@ spec:
               protocol: TCP
           resources:
             limits:
-              memory: 512Mi
+              memory: "{{ memorylimit }}"
     metadata:
       labels:
-        app: "react-web-app"
+        app: "{{ name }}"
   replicas: 1
   selector:
-    app: "react-web-app"
+    app: "{{ name }}"
   triggers:
     - type: ConfigChange
     - type: ImageChange
       imageChangeParams:
         automatic: true
         containerNames:
-          - "react-web-app"
+          - "{{ name }}"
         from:
           kind: ImageStreamTag
-          name: "react-web-app:latest"
+          name: "{{ name }}:latest"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: react-web-app
-  name: react-web-app
+    app: "{{ name }}"
+  name: "{{ name }}"
 spec:
   ports:
     - name: http
       port: 8080
       targetPort: 3000
   selector:
-    app: react-web-app
+    app: "{{ name }}"
 ---
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   labels:
-    app: react-web-app
-  name: react-web-app
+    app: "{{ name }}"
+  name: "{{ name }}"
 spec:
   port:
     targetPort: 3000
   to:
     kind: Service
-    name: react-web-app
+    name: "{{ name }}"
   tls:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
