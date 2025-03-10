@@ -40,36 +40,36 @@ spec:
     - imageChange: {}
       type: ImageChange
 ---
-apiVersion: apps.openshift.io/v1
-kind: DeploymentConfig
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: "${{ values.name }}"
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"${{ values.name }}:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${{ values.name }}\")].image"}]'
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
   labels:
     app: "${{ values.name }}"
+    app.kubernetes.io/component: "${{ values.name }}"
+    app.kubernetes.io/instance: "${{ values.name }}"
+  name: "${{ values.name }}"
 spec:
-  template:
-    spec:
-      containers:
-        - image: "${{ values.name }}"
-          imagePullPolicy: Always
-          name: "${{ values.name }}"
-          securityContext:
-            privileged: false
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          ports:
-            - containerPort: 3000
-              name: http
-              protocol: TCP
-          resources:
-            limits:
-              memory: "${{ values.memorylimit }}"
-    metadata:
-      labels:
-        app: "${{ values.name }}"
   replicas: 1
   selector:
-    app: "${{ values.name }}"
+    matchLabels:
+      deployment: "${{ values.name }}"
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        deployment: "${{ values.name }}"
+    spec:
+      containers:
+        - image: " "
+          name: "${{ values.name }}"
+          resources: {}
 ---
 apiVersion: v1
 kind: Service
