@@ -23,7 +23,7 @@ spec:
   source:
     git:
       uri: "${{ values.source_repository }}"
-      ref: "main"
+      ref: "master"
     type: Git
   strategy:
     type: Source
