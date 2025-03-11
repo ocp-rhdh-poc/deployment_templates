@@ -15,6 +15,7 @@ spec:
     git:
       uri: "${{ values.source_repository }}"
       ref: "master"
+      path: ./deployments
     type: Git
   strategy:
     type: Source
