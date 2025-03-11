@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: "${{ values.gitops_repository }}"
     targetRevision: HEAD
-    path: ./react-web-app
+    path: ./react-web-app/deployments
   destination:
     server: https://kubernetes.default.svc
     namespace: "${{ values.namespace }}"
