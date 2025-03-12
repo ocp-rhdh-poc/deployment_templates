@@ -8,6 +8,7 @@ metadata:
     app: "${{ values.name }}"
     app.kubernetes.io/component: "${{ values.name }}"
     app.kubernetes.io/instance: "${{ values.name }}"
+    backstage.io/kubernetes-id: "${{ values.name }}"
   name: "${{ values.name }}"
 spec:
   replicas: 1
@@ -22,6 +23,7 @@ spec:
       creationTimestamp: null
       labels:
         deployment: "${{ values.name }}"
+        backstage.io/kubernetes-id: "${{ values.name }}"
     spec:
       containers:
         - image: " "
