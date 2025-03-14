@@ -5,7 +5,7 @@ metadata:
     image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"${{ values.name }}:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${{ values.name }}\")].image"}]'
   creationTimestamp: null
   labels:
-    app: "${{ values.name }}"
+    deployment: "${{ values.name }}"
     app.kubernetes.io/component: "${{ values.name }}"
     app.kubernetes.io/instance: "${{ values.name }}"
     backstage.io/kubernetes-id: "${{ values.name }}"
