@@ -1,4 +1,4 @@
-apiVersion: tekton.dev/v1
+apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
   generateName: "${{ values.name }}-pipeline-"
@@ -17,10 +17,8 @@ spec:
       value: "${{ values.name }}"
   pipelineRef:
     name: clone-build-push
-  taskRunTemplate:
-    serviceAccountName: pipeline
-  timeouts:
-    pipeline: 1h0m0s
+  serviceAccountName: pipeline
+  timeout: 1h0m0s
   workspaces:
     - name: source-repo
       volumeClaimTemplate:
