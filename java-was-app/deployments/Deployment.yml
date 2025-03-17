@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"${{ values.name }}:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"${{ values.name }}\")].image"}]'
+  creationTimestamp: null
+  labels:
+    deployment: "${{ values.name }}"
+    app.kubernetes.io/component: "${{ values.name }}"
+    app.kubernetes.io/instance: "${{ values.name }}"
+    backstage.io/kubernetes-id: "${{ values.name }}"
+  name: "${{ values.name }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      deployment: "${{ values.name }}"
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        deployment: "${{ values.name }}"
+        backstage.io/kubernetes-id: "${{ values.name }}"
+    spec:
+      containers:
+        - image: " "
+          name: "${{ values.name }}"
+          resources: {}
