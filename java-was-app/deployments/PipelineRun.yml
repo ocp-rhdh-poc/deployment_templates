@@ -1,6 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: PipelineRun
 metadata:
+  generateName: "${{ values.name }}-pipeline-"
   annotations:
     chains.tekton.dev/signed: "true"
   finalizers:
