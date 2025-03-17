@@ -7,7 +7,7 @@ metadata:
   name: "${{ values.name }}"
 spec:
   port:
-    targetPort: 8080
+    targetPort: 9080
   to:
     kind: Service
     name: "${{ values.name }}"
