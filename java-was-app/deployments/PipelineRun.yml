@@ -1,7 +1,8 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  generateName: "${{ values.name }}-pipeline-"
+  # generateName: "${{ values.name }}-pipeline-"
+  name: "{{ .Values.name }}-pipeline-{{ .Release.Time.Seconds }}"
   annotations:
     chains.tekton.dev/signed: "true"
   finalizers:
