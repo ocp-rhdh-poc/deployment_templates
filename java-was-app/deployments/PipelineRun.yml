@@ -14,7 +14,7 @@ spec:
     - name: GIT_REPO
       value: "${{ values.source_repository }}"
     - name: IMAGE_NAME
-      value: "${{ values.name }}:latest"
+      value: "${{ values.name }}"
   pipelineRef:
     name: clone-build-push
   taskRunTemplate:
