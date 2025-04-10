@@ -23,7 +23,7 @@ spec:
       from:
         kind: ImageStreamTag
         namespace: openshift
-        name: nodejs:18-alpine
+        name: nodejs:18-ubi9
   triggers:
     - github:
         secret: "bWVobWVobWVo"
