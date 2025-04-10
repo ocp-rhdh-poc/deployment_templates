@@ -4,6 +4,7 @@ metadata:
   name: "${{ values.name }}-checkoutservice"
   labels:
     app: "${{ values.name }}-checkoutservice"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   selector:
     matchLabels:
@@ -12,6 +13,7 @@ spec:
     metadata:
       labels:
         app: "${{ values.name }}-checkoutservice"
+        backstage.io/kubernetes-id: "${{ values.name }}"
     spec:
       containers:
         - name: server
@@ -59,6 +61,7 @@ metadata:
   name: "${{ values.name }}-checkoutservice"
   labels:
     app: "${{ values.name }}-checkoutservice"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   type: ClusterIP
   selector:

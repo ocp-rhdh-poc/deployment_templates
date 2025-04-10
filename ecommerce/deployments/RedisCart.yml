@@ -4,6 +4,7 @@ metadata:
   name: "${{ values.name }}-redis-cart"
   labels:
     app: "${{ values.name }}-redis-cart"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   selector:
     matchLabels:
@@ -12,16 +13,10 @@ spec:
     metadata:
       labels:
         app: "${{ values.name }}-redis-cart"
+        backstage.io/kubernetes-id: "${{ values.name }}"
     spec:
       containers:
-        - name: redis
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
-            privileged: false
-            readOnlyRootFilesystem: true
+        - name: redis 
           image: redis:alpine
           ports:
             - containerPort: 6379
@@ -53,6 +48,7 @@ metadata:
   name: "${{ values.name }}-redis-cart"
   labels:
     app: "${{ values.name }}-redis-cart"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   type: ClusterIP
   selector:

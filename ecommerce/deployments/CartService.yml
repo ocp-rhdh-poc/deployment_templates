@@ -4,6 +4,7 @@ metadata:
   name: "${{ values.name }}-cartservice"
   labels:
     app: "${{ values.name }}-cartservice"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   selector:
     matchLabels:
@@ -12,6 +13,7 @@ spec:
     metadata:
       labels:
         app: "${{ values.name }}-cartservice"
+        backstage.io/kubernetes-id: "${{ values.name }}"
     spec:
       terminationGracePeriodSeconds: 5
       containers:
@@ -52,6 +54,7 @@ metadata:
   name: "${{ values.name }}-cartservice"
   labels:
     app: "${{ values.name }}-cartservice"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   type: ClusterIP
   selector:

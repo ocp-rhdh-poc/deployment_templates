@@ -4,6 +4,7 @@ metadata:
   name: "${{ values.name }}-frontend"
   labels:
     app: "${{ values.name }}-frontend"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   selector:
     matchLabels:
@@ -12,6 +13,7 @@ spec:
     metadata:
       labels:
         app: "${{ values.name }}-frontend"
+        backstage.io/kubernetes-id: "${{ values.name }}"
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
@@ -77,6 +79,7 @@ metadata:
   name: "${{ values.name }}-frontend"
   labels:
     app: "${{ values.name }}-frontend"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   type: ClusterIP
   selector:
@@ -92,6 +95,7 @@ metadata:
   name: ecommerce-route
   labels:
     app: "${{ values.name }}-frontend"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   to:
     kind: Service

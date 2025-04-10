@@ -4,6 +4,7 @@ metadata:
   name: "${{ values.name }}-recommendationservice"
   labels:
     app: "${{ values.name }}-recommendationservice"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   selector:
     matchLabels:
@@ -12,6 +13,7 @@ spec:
     metadata:
       labels:
         app: "${{ values.name }}-recommendationservice"
+        backstage.io/kubernetes-id: "${{ values.name }}"
     spec:
       terminationGracePeriodSeconds: 5
       containers:
@@ -54,6 +56,7 @@ metadata:
   name: "${{ values.name }}-recommendationservice"
   labels:
     app: "${{ values.name }}-recommendationservice"
+    backstage.io/kubernetes-id: "${{ values.name }}"
 spec:
   type: ClusterIP
   selector:
